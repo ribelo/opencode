@@ -955,9 +955,15 @@ const PART_MAPPING = {
 function ReasoningPart(props: { last: boolean; part: ReasoningPart; message: AssistantMessage }) {
   const { theme, syntax } = useTheme()
   const ctx = use()
-  const content = createMemo(() => props.part.text.trim())
+  const content = createMemo(() => {
+    const text = props.part.text.trim()
+    // Wrap each paragraph in italic markdown
+    const paragraphs = text.split(/\n\n+/)
+    const italicParagraphs = paragraphs.map(p => `_${p.trim()}_`).join('\n\n')
+    return `_**Thinking:**_\n\n${italicParagraphs}`
+  })
   return (
-    <Show when={content()}>
+    <Show when={props.part.text.trim()}>
       <box
         id={"text-" + props.part.id}
         paddingLeft={2}
@@ -972,7 +978,7 @@ function ReasoningPart(props: { last: boolean; part: ReasoningPart; message: Ass
           drawUnstyledText={false}
           streaming={true}
           syntaxStyle={syntax()}
-          content={"_Thinking:_ " + content()}
+          content={content()}
           conceal={ctx.conceal()}
           fg={theme.text}
         />

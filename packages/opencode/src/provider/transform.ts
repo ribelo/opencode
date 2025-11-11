@@ -184,17 +184,15 @@ export namespace ProviderTransform {
     const modelCap = modelLimit || globalLimit
     const standardLimit = Math.min(modelCap, globalLimit)
 
-    if (providerID === "anthropic") {
-      const thinking = options?.["thinking"]
-      const budgetTokens = typeof thinking?.["budgetTokens"] === "number" ? thinking["budgetTokens"] : 0
-      const enabled = thinking?.["type"] === "enabled"
-      if (enabled && budgetTokens > 0) {
-        // Return text tokens so that text + thinking <= model cap, preferring 32k text when possible.
-        if (budgetTokens + standardLimit <= modelCap) {
-          return standardLimit
-        }
-        return modelCap - budgetTokens
+    const thinking = options?.["thinking"]
+    const budgetTokens = typeof thinking?.["budgetTokens"] === "number" ? thinking["budgetTokens"] : 0
+    const enabled = thinking?.["type"] === "enabled"
+    if (enabled && budgetTokens > 0) {
+      // Return text tokens so that text + thinking <= model cap, preferring 32k text when possible.
+      if (budgetTokens + standardLimit <= modelCap) {
+        return standardLimit
       }
+      return modelCap - budgetTokens
     }
 
     return standardLimit

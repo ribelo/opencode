@@ -36,6 +36,17 @@ export namespace Provider {
         },
       }
     },
+    async "kimi-for-code"() {
+      return {
+        autoload: false,
+        options: {
+          headers: {
+            "anthropic-beta":
+              "claude-code-20250219,interleaved-thinking-2025-05-14,fine-grained-tool-streaming-2025-05-14",
+          },
+        },
+      }
+    },
     async opencode(input) {
       const hasKey = await (async () => {
         if (input.env.some((item) => process.env[item])) return true
