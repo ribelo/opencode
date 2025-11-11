@@ -959,7 +959,7 @@ function ReasoningPart(props: { last: boolean; part: ReasoningPart; message: Ass
     const text = props.part.text.trim()
     // Wrap each paragraph in italic markdown
     const paragraphs = text.split(/\n\n+/)
-    const italicParagraphs = paragraphs.map(p => `_${p.trim()}_`).join('\n\n')
+    const italicParagraphs = paragraphs.map((p) => `_${p.trim()}_`).join("\n\n")
     return `_**Thinking:**_\n\n${italicParagraphs}`
   })
   return (
